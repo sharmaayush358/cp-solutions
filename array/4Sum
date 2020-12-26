@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int increment(vector<int>&nums, int i, int limit, int x) {
+        while(i<limit && nums[i] == x) {
+            i++;
+        }
+        return i;
+    }
+    
+    int decrement(vector<int>&nums, int i, int limit, int x) {
+        while(i>limit && nums[i] == x) {
+            i--;
+        }
+        return i;
+    }
+    
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        
+        vector<vector<int> > ans;
+        int k = 0;
+        while(k<n) {
+            int l = n-1, w = nums[k];
+            while(k<l) {
+                int z = nums[l];
+                
+                int i = k+1, j = l-1;
+                while(i<j) {
+                    int x = nums[i], y = nums[j];
+                    int sum = w+x+y+z;
+
+                    if(sum == target) {
+                        ans.push_back({w, x, y, z});
+                        i = increment(nums, i, n, x);
+                        j = decrement(nums, j, -1, y);
+                    }
+                    else if(sum < target) {
+                        i++;
+                    }
+                    else {
+                        j--;
+                    }
+                }
+                l = decrement(nums, l, -1, z);
+            }
+            k = increment(nums, k, n, w);
+        }
+        
+        return ans;
+    }
+};
